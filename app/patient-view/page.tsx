@@ -89,7 +89,9 @@ export default function PatientView() {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    socketRef.current = io(process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3001");
+    socketRef.current = io(
+      process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3001"
+    );
 
     return () => {
       socketRef.current?.disconnect();
@@ -131,6 +133,14 @@ export default function PatientView() {
     };
     setPatientInfo(updated);
     emitUpdate(updated);
+
+    if (errors[name as keyof PatientInfo]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name as keyof PatientInfo];
+        return newErrors;
+      });
+    }
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,6 +162,13 @@ export default function PatientView() {
     };
     setPatientInfo(updated);
     emitUpdate(updated);
+
+    if (errors.phoneNumber) {
+      setErrors((prev) => {
+        const { phoneNumber, ...rest } = prev;
+        return rest;
+      });
+    }
   };
 
   const validateForm = () => {
@@ -303,7 +320,7 @@ export default function PatientView() {
           error={errors.nationality}
         />
 
-         <InputForm
+        <InputForm
           type="text"
           label="Religion"
           name="religion"
@@ -313,7 +330,9 @@ export default function PatientView() {
         />
 
         <div className="col-span-full mt-4 ">
-          <p className="mb-2 text-sm font-small text-gray-700">Emergency Contact</p>
+          <p className="mb-2 text-sm font-small text-gray-700">
+            Emergency Contact
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 rounded-lg border border-gray-200">
             <InputForm
               type="text"
