@@ -20,12 +20,6 @@ NEXT_PUBLIC_SERVER_URL=https://your-backend-url.com // or http://localhost:3001
 npm run dev
 ```
 
-## Production mode
-
-```bash
-npm start
-```
-
 ## The domain on vercel
 
 Link for Patient View
